@@ -9,7 +9,12 @@ import fnmatch
 import numpy as np
 import pandas as pd
 import PIL.Image as Image
-import nibabel
+
+try:
+    import nibabel
+    has_nibabel = True
+except ImportError:
+    has_nibabel = False
 
 import torch as th
 
@@ -269,7 +274,7 @@ def default_file_reader(x):
     if isinstance(x, str):
         if x.endswith('.npy'):
             x = npy_loader(x)
-        elif x.endsiwth('.nii.gz'):
+        elif x.endsiwth('.nii.gz') and has_nibabel:
             x = nifti_loader(x)
         else:
             try:
